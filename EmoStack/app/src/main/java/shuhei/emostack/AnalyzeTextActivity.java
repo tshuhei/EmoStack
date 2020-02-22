@@ -216,7 +216,7 @@ public class AnalyzeTextActivity extends AppCompatActivity {
 
                         diary = new HashMap<>();
 
-                        String unixTime = intent.getStringExtra("unixTIme");
+                        String unixTime = intent.getStringExtra("unixTime");
 
                         diary.put("text",userInput.getText().toString());
                         diary.put("sadness",score_sadness);
@@ -226,6 +226,7 @@ public class AnalyzeTextActivity extends AppCompatActivity {
                         diary.put("confident",score_confident);
                         diary.put("tentative",score_tentative);
                         diary.put("analytical",score_analytical);
+                        Log.e("diary",diary.toString());
                         diary.put("date",Long.parseLong(unixTime));
 
                         db.collection("users").document(mUserId)
@@ -235,7 +236,7 @@ public class AnalyzeTextActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.e("success","DocumentSnapshot added successfully");
-                                loadShowDiaryActivity((long)diary.get("data"));
+                                loadShowDiaryActivity((long)diary.get("date"));
                             }
                         })
                                 .addOnFailureListener(new OnFailureListener() {
