@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "369872346313",
+    "firebase_url": "https://emostack-firebase.firebaseio.com",
+    "project_id": "emostack-firebase",
+    "storage_bucket": "emostack-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369872346313:android:cb298df88cbdea699d8118",
+        "android_client_info": {
+          "package_name": "shuhei.emostack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "369872346313-h3is3mg5jk0p2gjh7cs7lr35bjt3bd2g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN7sKmrqY-c6AzNDXkwhrvDJO1PUDaGr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "369872346313-h3is3mg5jk0p2gjh7cs7lr35bjt3bd2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
