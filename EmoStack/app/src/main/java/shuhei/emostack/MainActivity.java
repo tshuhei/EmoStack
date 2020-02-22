@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements AnalyzeFragment.O
         if(mFirebaseUser != null){
             mUserId = mFirebaseUser.getUid();
         }else{
-            //loadLoginActivity();
+            loadLoginActivity();
         }
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());

@@ -1,13 +1,34 @@
 package shuhei.emostack;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -23,6 +44,14 @@ public class CalendarFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FirebaseFirestore db;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private String mUserId;
+    private List<String> dates;
+    private CompactCalendarView compactCalendarView;
+    private TextView yearMonth;
+    private SimpleDateFormat dateFormatMonth;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,7 +94,71 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+        View view = inflater.inflate(R.layout.fragment_calendar,container,false);
+
+        yearMonth = (TextView)view.findViewById(R.id.yearMonth);
+        dateFormatMonth = new SimpleDateFormat("MMM-yyyy", Locale.getDefault());
+        compactCalendarView = (CompactCalendarView)view.findViewById(R.id.compactcalendar_view);
+        compactCalendarView.setUseThreeLetterAbbreviation(true);
+
+        dates = new ArrayList<>();
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if(mFirebaseUser!=null){
+            mUserId = mFirebaseUser.getUid();
+        }else{
+            loadLoginActivity();
+        }
+
+        db = FirebaseFirestore.getInstance();
+
+        if(mUserId!=null){
+            db.collection("users")
+                    .document(mUserId)
+                    .collection("subcollection")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()) {
+                                for(QueryDocumentSnapshot document : task.getResult()){
+                                    dates.add(document.getId());
+                                    Event ev = new Event(Color.BLUE, Long.parseLong(dates.get(dates.size()-1)),"");
+                                    compactCalendarView.addEvent(ev);
+                                }
+                            }else{
+                                Log.e("get.error","Error getting documents");
+                            }
+                        }
+                    });
+        }
+
+        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                List<Event> evList = compactCalendarView.getEvents(dateClicked);
+                if(evList.size()==0){
+                    Intent intent = new Intent(getContext(),AnalyzeTextActivity.class);
+                    intent.putExtra("date",dateClicked.toString());
+                    intent.putExtra("unixTime",String.valueOf(dateClicked.getTime()));
+                    startActivity(intent);
+                }else{
+                    Event ev = evList.get(evList.size()-1);
+                    Intent intent = new Intent(getContext(),ShowDiaryActivity.class);
+                    intent.putExtra("date",String.valueOf(ev.getTimeInMillis()));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                yearMonth.setText(dateFormatMonth.format(firstDayOfNewMonth));
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,5 +198,12 @@ public class CalendarFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void loadLoginActivity(){
+        Intent intent = new Intent(this.getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
