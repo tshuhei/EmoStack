@@ -55,6 +55,16 @@ public class ShowDiaryActivity extends AppCompatActivity {
     private double stress;
     private Button stressReport;
     private double stressScore;
+    private double aveanger;
+    private double avefear;
+    private double avesadness;
+    private double aveconfident;
+    private double avejoy;
+    private double dayanger;
+    private double dayfear;
+    private double daysadness;
+    private double dayconfident;
+    private double dayjoy;
 
 
     @Override
@@ -159,15 +169,22 @@ public class ShowDiaryActivity extends AppCompatActivity {
                                 confidentText.setText("Confident: " + diaryData.get("confident").toString());
                                 sadnessText.setText("Sadness: " + diaryData.get("sadness").toString());
 
-                                double anger =(double)diaryData.get("anger");
-                                double fear = (double)diaryData.get("fear");
-                                double joy = (double)diaryData.get("joy");
-                                double confident = (double)diaryData.get("confident");
-                                double sadness = (double)diaryData.get("sadness");
-                                setData(anger*100,fear*100,joy*100,confident*100,sadness*100);
+                                dayanger =(double)diaryData.get("anger");
+                                dayfear = (double)diaryData.get("fear");
+                                dayjoy = (double)diaryData.get("joy");
+                                dayconfident = (double)diaryData.get("confident");
+                                daysadness = (double)diaryData.get("sadness");
 
-                                double negave = (anger + fear + sadness)/3;
-                                double posave = (joy + confident)/2;
+                                aveanger = 0.8;
+                                avefear = 0.5;
+                                avejoy = 0.3;
+                                aveconfident = 0.1;
+                                avesadness = 0.65;
+
+                                setData();
+
+                                double negave = (dayanger + dayfear + daysadness)/3;
+                                double posave = (dayjoy + dayconfident)/2;
 
                                 stress = posave - negave;
                                 stress *= -1;
@@ -209,15 +226,22 @@ public class ShowDiaryActivity extends AppCompatActivity {
         });
     }
 
-    private void setData(double anger, double fear, double joy, double confident, double sadness){
+    private void setData(){
         ArrayList<RadarEntry> entries = new ArrayList<>();
-        entries.add(new RadarEntry((float)anger));
-        entries.add(new RadarEntry((float)fear));
-        entries.add(new RadarEntry((float)joy));
-        entries.add(new RadarEntry((float)confident));
-        entries.add(new RadarEntry((float)sadness));
+        entries.add(new RadarEntry((float)dayanger*100));
+        entries.add(new RadarEntry((float)dayfear*100));
+        entries.add(new RadarEntry((float)dayjoy*100));
+        entries.add(new RadarEntry((float)dayconfident*100));
+        entries.add(new RadarEntry((float)daysadness*100));
 
-        RadarDataSet set = new RadarDataSet(entries, "Emotion");
+        ArrayList<RadarEntry> aveEntries = new ArrayList<>();
+        aveEntries.add(new RadarEntry((float)aveanger*100));
+        aveEntries.add(new RadarEntry((float)avefear*100));
+        aveEntries.add(new RadarEntry((float)avejoy*100));
+        aveEntries.add(new RadarEntry((float)aveconfident*100));
+        aveEntries.add(new RadarEntry((float)avesadness*100));
+
+        RadarDataSet set = new RadarDataSet(entries, "Emotion Today");
         set.setColor(Color.rgb(103,110,129));
         set.setFillColor(Color.rgb(103,110,129));
         set.setDrawFilled(true);
@@ -226,8 +250,18 @@ public class ShowDiaryActivity extends AppCompatActivity {
         set.setDrawHighlightCircleEnabled(true);
         set.setDrawHighlightIndicators(false);
 
+        RadarDataSet aveSet = new RadarDataSet(aveEntries, "Average Emotion");
+        aveSet.setColor(Color.BLUE);
+        aveSet.setFillColor(Color.BLUE);
+        aveSet.setDrawFilled(true);
+        aveSet.setFillAlpha(180);
+        aveSet.setLineWidth(2f);
+        aveSet.setDrawHighlightCircleEnabled(true);
+        aveSet.setDrawHighlightIndicators(false);
+
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(set);
+        sets.add(aveSet);
 
         RadarData data = new RadarData(sets);
         data.setValueTypeface(tfLight);
