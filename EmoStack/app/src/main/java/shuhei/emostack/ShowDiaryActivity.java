@@ -30,10 +30,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class ShowDiaryActivity extends AppCompatActivity {
@@ -65,6 +68,9 @@ public class ShowDiaryActivity extends AppCompatActivity {
     private double daysadness;
     private double dayconfident;
     private double dayjoy;
+    private List<Map<String,Object>> dataList;
+    private long monthMS;
+    private String[] emotions;
 
 
     @Override
@@ -84,6 +90,8 @@ public class ShowDiaryActivity extends AppCompatActivity {
         dailyStress = (TextView)findViewById(R.id.dailyStress);
         stressReport = (Button)findViewById(R.id.stress_report);
 
+        monthMS = System.currentTimeMillis() - (1000L * 60L * 60L * 24L * 30L);
+        dataList = new ArrayList<>();
 
         chart = (RadarChart)findViewById(R.id.radar_chart);
 
@@ -94,6 +102,14 @@ public class ShowDiaryActivity extends AppCompatActivity {
         chart.setWebLineWidthInner(1f);
         chart.setWebColorInner(Color.LTGRAY);
         chart.setWebAlpha(100);
+
+        emotions = new String[]{
+                "anger",
+                "fear",
+                "sadness",
+                "joy",
+                "confident"
+        };
 
         tfLight = Typeface.createFromAsset(this.getAssets(),"OpenSans-Light.ttf");
 
@@ -175,13 +191,13 @@ public class ShowDiaryActivity extends AppCompatActivity {
                                 dayconfident = (double)diaryData.get("confident");
                                 daysadness = (double)diaryData.get("sadness");
 
-                                aveanger = 0.8;
-                                avefear = 0.5;
-                                avejoy = 0.3;
-                                aveconfident = 0.1;
-                                avesadness = 0.65;
+                                //aveanger = 0.8;
+                                //avefear = 0.5;
+                                //avejoy = 0.3;
+                                //aveconfident = 0.1;
+                                //avesadness = 0.65;
 
-                                setData();
+                                //setData();
 
                                 double negave = (dayanger + dayfear + daysadness)/3;
                                 double posave = (dayjoy + dayconfident)/2;
@@ -201,6 +217,55 @@ public class ShowDiaryActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        if(mUserId!=null){
+            db.collection("users")
+                    .document(mUserId)
+                    .collection("subcollection")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    Map<String, Object> data = document.getData();
+                                    long diaryDate = (long)data.get("date");
+                                    if(diaryDate >= monthMS){
+                                        dataList.add(data);
+                                    }
+                                }
+
+                                for(int i=0;i<5;i++) {
+                                    double emo=0;
+                                    int j = 0;
+                                    for (Map<String, Object> map : dataList) {
+                                        Double doubleval = (double) map.get(emotions[i]);
+                                        float val = doubleval.floatValue();
+                                        emo+=val;
+                                        j++;
+                                    }
+                                    emo /= j;
+                                    if(emotions[i]=="anger"){
+                                        aveanger = emo;
+                                    }else if(emotions[i]=="fear"){
+                                        avefear = emo;
+                                    }else if(emotions[i]=="sadness"){
+                                        avesadness = emo;
+                                    }else if(emotions[i]=="confident"){
+                                        aveconfident = emo;
+                                    }else if(emotions[i]=="joy"){
+                                        avejoy = emo;
+                                    }
+                                }
+
+                                setData();
+
+                            }else{
+                                Log.e("Error","The task is unsuccessfully done");
+                            }
+                        }
+                    });
+        }
 
         doneButton.setOnClickListener(new View.OnClickListener(){
 
