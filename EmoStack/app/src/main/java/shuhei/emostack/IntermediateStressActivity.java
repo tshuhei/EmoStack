@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class IntermediateStressActivity extends AppCompatActivity {
 
     private TextView scoreText;
+    private TextView recommendation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +19,12 @@ public class IntermediateStressActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         scoreText = (TextView)findViewById(R.id.score_intermediate_stress);
+        recommendation = (TextView)findViewById(R.id.recommendation_intermediate);
 
         Intent intent = this.getIntent();
         String score = intent.getStringExtra("score");
 
-        scoreText.setText(score);
+        scoreText.setText("Your stress score: " + String.format("%.0f",Double.parseDouble(score)) + "%");
+        recommendation.setText("Recommendations:\n・Change the environment\n・Meditate\n・Do relaxation exercises\n・Express your feelings");
     }
 }

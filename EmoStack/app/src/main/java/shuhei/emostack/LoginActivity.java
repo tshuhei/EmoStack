@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     String mEmail;
     String mPassword;
     private FirebaseAuth mFirebaseAuth;
-    BootstrapButton bbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

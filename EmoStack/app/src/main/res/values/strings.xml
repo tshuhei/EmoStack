@@ -17,4 +17,14 @@
     <string name="confident">Confident</string>
     <string name="stress_report">Stress Report</string>
     <string name="back">Back</string>
+    <string name="stress_report_high">Your stress result: Highly stressed</string>
+    <string name="stress_report_intermediate">Your stress result: Intermediately stressed</string>
+    <string name="stress_report_mild">Your stress result: Stressed a little</string>
+    <string name="stress_report_no">Your stress result: Stress free</string>
+    <string name="description_no">Congratulation! you are stress free, and you don\'t have to care so much about your stress level now.</string>
+    <string name="description_mild">The result shows that you are a little stressed, but you don\'t have to be so severe with the result. Enjoy your life and don\'t forget to take some relaxation activities, then you\'ll be free from stress.</string>
+    <string name="description_intermediate">You are intermediately stressed and this means that you should care about your mental health. There are several causes of stress, such as job, working environment, phisical health and so on. Take a look at the destress recommendations below and think about your mental health, then you\'ll be stress free!</string>
+    <string name="description_high">You are highly stressed and this means that you should seriously care about your mental health. There are several causes of stress, such as job, working environment, phisical health and so on. Take a look at the destress recommendation below and take some relaxation activities. However, if you cannot destress with these activities, you should think about scheduling an appointment with a mental health professional .</string>
+    <string name="recommendation_no">No destress recommendation for you now</string>
+    <string name="recommendation_intermediate">Recommendations:</string>
 </resources>

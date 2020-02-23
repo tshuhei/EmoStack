@@ -22,6 +22,6 @@ public class NoStressActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         String score = intent.getStringExtra("score");
 
-        scoreText.setText(score);
+        scoreText.setText("Your stress score: " + String.format("%.0f",Double.parseDouble(score)) + "%");
     }
 }
