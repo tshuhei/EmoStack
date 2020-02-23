@@ -114,7 +114,7 @@ public class CalendarFragment extends Fragment {
         if(mFirebaseUser!=null){
             mUserId = mFirebaseUser.getUid();
         }else{
-            loadLoginActivity();
+            loadInitialActivity();
         }
 
         db = FirebaseFirestore.getInstance();
@@ -207,10 +207,12 @@ public class CalendarFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void loadLoginActivity(){
-        Intent intent = new Intent(this.getContext(), LoginActivity.class);
+    public void loadInitialActivity(){
+        Intent intent = new Intent(this.getContext(), InitialActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+
 }

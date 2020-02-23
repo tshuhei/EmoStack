@@ -166,7 +166,7 @@ public class AnalyzeFragment extends Fragment {
         };
 
         if(mFirebaseUser == null){
-            loadLoginActivity();
+            loadInitialActivity();
         }else{
             mUserId = mFirebaseUser.getUid();
         }
@@ -338,8 +338,8 @@ public class AnalyzeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void loadLoginActivity(){
-        Intent intent = new Intent(this.getContext(), LoginActivity.class);
+    public void loadInitialActivity(){
+        Intent intent = new Intent(this.getContext(), InitialActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

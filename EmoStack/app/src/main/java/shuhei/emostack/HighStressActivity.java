@@ -26,5 +26,6 @@ public class HighStressActivity extends AppCompatActivity {
 
         scoreText.setText("Your stress score: " + String.format("%.0f",Double.parseDouble(score)) + "%");
         recommendation.setText("Recommendations:\n・Change the environment\n・Meditate\n・Do relaxation exercises\n・Express your feelings");
+
     }
 }

@@ -27,4 +27,6 @@
     <string name="description_high">You are highly stressed and this means that you should seriously care about your mental health. There are several causes of stress, such as job, working environment, phisical health and so on. Take a look at the destress recommendation below and take some relaxation activities. However, if you cannot destress with these activities, you should think about scheduling an appointment with a mental health professional .</string>
     <string name="recommendation_no">No destress recommendation for you now</string>
     <string name="recommendation_intermediate">Recommendations:</string>
+    <string name="emo_stack">EmoStack</string>
+    <string name="start">Start</string>
 </resources>
