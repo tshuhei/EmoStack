@@ -51,6 +51,8 @@ public class ShowDiaryActivity extends AppCompatActivity {
     private RadarChart chart;
     private Typeface tfLight;
     private Button doneButton;
+    private TextView dailyStress;
+    private double stress;
 
 
     @Override
@@ -67,6 +69,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
         confidentText = (TextView)findViewById(R.id.confidentText);
         sadnessText = (TextView)findViewById(R.id.sadnessText);
         doneButton = (Button)findViewById(R.id.done);
+        dailyStress = (TextView)findViewById(R.id.dailyStress);
 
         chart = (RadarChart)findViewById(R.id.chart);
 
@@ -152,12 +155,22 @@ public class ShowDiaryActivity extends AppCompatActivity {
                                 confidentText.setText("Confident: " + diaryData.get("confident").toString());
                                 sadnessText.setText("Sadness: " + diaryData.get("sadness").toString());
 
-                                double anger =(double)diaryData.get("anger") * 100;
-                                double fear = (double)diaryData.get("fear") * 100;
-                                double joy = (double)diaryData.get("joy") * 100;
-                                double confident = (double)diaryData.get("confident") * 100;
-                                double sadness = (double)diaryData.get("sadness") * 100;
-                                setData(anger,fear,joy,confident,sadness);
+                                double anger =(double)diaryData.get("anger");
+                                double fear = (double)diaryData.get("fear");
+                                double joy = (double)diaryData.get("joy");
+                                double confident = (double)diaryData.get("confident");
+                                double sadness = (double)diaryData.get("sadness");
+                                setData(anger*100,fear*100,joy*100,confident*100,sadness*100);
+
+                                double negave = (anger + fear + sadness)/3;
+                                double posave = (joy + confident)/2;
+
+                                stress = posave - negave;
+                                stress *= -1;
+                                stress += 1;
+                                stress*= 50;
+
+                                dailyStress.setText("Your stress score: "+stress+"%");
                             }else{
                                 Log.e("error","No such document");
                             }

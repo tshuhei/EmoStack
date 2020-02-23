@@ -114,7 +114,8 @@ public class AnalyzeTextActivity extends AppCompatActivity {
                             int num_analytical = 0;
                             int num_confident = 0;
                             int num_tentative = 0;
-                            for(int index = 0; sentence_tones.length() > index; index++){
+                            int l = sentence_tones.length();
+                            for(int index = 0; l > index; index++){
                                 JSONObject sentence_tone = sentence_tones.getJSONObject(index);
                                 JSONArray tones = sentence_tone.getJSONArray("tones");
                                 if(tones.isNull(0)) {
@@ -206,7 +207,7 @@ public class AnalyzeTextActivity extends AppCompatActivity {
                             if(num_tentative == 0){
                                 score_tentative = 0;
                             }else{
-                                score_tentative = sum_tentative/num_tentative;
+                                score_tentative = sum_tentative/l;
                             }
 
                         }catch(JSONException e){

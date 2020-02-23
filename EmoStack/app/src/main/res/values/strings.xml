@@ -10,4 +10,9 @@
     <string name="log_in">Log in</string>
     <string name="logout">Logout</string>
     <string name="done">Done</string>
+    <string name="anger">Anger</string>
+    <string name="fear">Fear</string>
+    <string name="sadness">Sadness</string>
+    <string name="joy">Joy</string>
+    <string name="confident">Confident</string>
 </resources>
