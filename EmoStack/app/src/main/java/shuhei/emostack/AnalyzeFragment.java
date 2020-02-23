@@ -206,7 +206,7 @@ public class AnalyzeFragment extends Fragment {
         yAxis.setLabelCount(5,false);
         yAxis.setTextSize(9f);
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
+        yAxis.setAxisMaximum(0.8f);
         yAxis.setDrawLabels(false);
 
         Legend l = radarChart.getLegend();
@@ -258,7 +258,7 @@ public class AnalyzeFragment extends Fragment {
                                 avejoy = (double)emoList.get("joy");
                                 avesadness = (double)emoList.get("sadness");
 
-                                setData(aveanger*100,avefear*100,avejoy*100,aveconfident*100,avesadness*100);
+                                setData(aveanger,avefear,avejoy,aveconfident,avesadness);
 
                                 double negave = (avefear + aveanger + avesadness)/3;
 
@@ -270,7 +270,7 @@ public class AnalyzeFragment extends Fragment {
                                 stress += 1;
                                 stress *= 50;
 
-                                stressText.setText("Your stress score: "+stress + "%");
+                                stressText.setText("Your stress score: "+ String.format("%.0f",stress) + "%");
 
                                 stressScore = stress;
 
@@ -382,6 +382,7 @@ public class AnalyzeFragment extends Fragment {
 
 
         chart.getXAxis().setEnabled(true);
+        chart.getXAxis().setDrawAxisLine(false);
 
         chart.animateX(2500);
 
@@ -416,6 +417,12 @@ public class AnalyzeFragment extends Fragment {
         set1.setCircleColor(colors[index]);
         set1.setHighLightColor(colors[index]);
         set1.setDrawValues(true);
+        set1.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f",value);
+            }
+        });
 
         return new LineData(set1);
     }
@@ -470,8 +477,14 @@ public class AnalyzeFragment extends Fragment {
         RadarData data = new RadarData(sets);
         data.setValueTypeface(tfLight);
         data.setValueTextSize(8f);
-        data.setDrawValues(false);
+        data.setDrawValues(true);
         data.setValueTextColor(Color.BLACK);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f",value);
+            }
+        });
 
         radarChart.setData(data);
         radarChart.invalidate();

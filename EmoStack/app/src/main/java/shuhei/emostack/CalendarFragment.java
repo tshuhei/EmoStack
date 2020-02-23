@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -50,7 +49,6 @@ public class CalendarFragment extends Fragment {
     private String mUserId;
     private List<String> dates;
     private CompactCalendarView compactCalendarView;
-    private TextView yearMonth;
     private SimpleDateFormat dateFormatMonth;
 
     // TODO: Rename and change types of parameters
@@ -96,15 +94,22 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calendar,container,false);
 
-        yearMonth = (TextView)view.findViewById(R.id.yearMonth);
         dateFormatMonth = new SimpleDateFormat("MMM-yyyy", Locale.getDefault());
         compactCalendarView = (CompactCalendarView)view.findViewById(R.id.compactcalendar_view);
         compactCalendarView.setUseThreeLetterAbbreviation(true);
+        compactCalendarView.setCalendarBackgroundColor(Color.TRANSPARENT);
+        compactCalendarView.setCurrentSelectedDayBackgroundColor(Color.TRANSPARENT);
+        compactCalendarView.setCurrentDayBackgroundColor(Color.RED);
 
         dates = new ArrayList<>();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        long current = System.currentTimeMillis();
+        Date today = new Date(current);
+
+        getActivity().setTitle(dateFormatMonth.format(today));
 
         if(mFirebaseUser!=null){
             mUserId = mFirebaseUser.getUid();
@@ -139,9 +144,11 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onDayClick(Date dateClicked) {
                 List<Event> evList = compactCalendarView.getEvents(dateClicked);
+                compactCalendarView.setCurrentSelectedDayBackgroundColor(Color.GRAY);
                 if(evList.size()==0){
                     Intent intent = new Intent(getContext(),AnalyzeTextActivity.class);
-                    intent.putExtra("date",dateClicked.toString());
+                    long l = dateClicked.getTime();
+                    intent.putExtra("date",String.valueOf(l));
                     intent.putExtra("unixTime",String.valueOf(dateClicked.getTime()));
                     startActivity(intent);
                 }else{
@@ -154,7 +161,7 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                yearMonth.setText(dateFormatMonth.format(firstDayOfNewMonth));
+                getActivity().setTitle(dateFormatMonth.format(firstDayOfNewMonth));
             }
         });
 

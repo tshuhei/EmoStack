@@ -8,8 +8,8 @@
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/compactcalendar_view"
-        android:layout_width="0dp"
-        android:layout_height="474dp"
+        android:layout_width="360dp"
+        android:layout_height="450dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:compactCalendarBackgroundColor="#FFFFFF"
@@ -24,13 +24,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/yearMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +54,7 @@ public class AnalyzeTextActivity extends AppCompatActivity {
     private double score_tentative;
     private Intent intent;
     private Map<String, Object> diary;
+    private Button back;
 
 
     @Override
@@ -61,9 +65,15 @@ public class AnalyzeTextActivity extends AppCompatActivity {
 
         TextView yearMonth = (TextView)findViewById(R.id.yearMonth);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
         intent = this.getIntent();
         String date = intent.getStringExtra("date");
-        yearMonth.setText(date);
+        Date day = new Date(Long.parseLong(date));
+
+        yearMonth.setText(sdf.format(day));
+
+        back = (Button)findViewById(R.id.back);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -257,11 +267,31 @@ public class AnalyzeTextActivity extends AppCompatActivity {
 
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMainActivity();
+            }
+        });
+
     }
 
     public void loadShowDiaryActivity(long date){
         Intent showIntent = new Intent(this,ShowDiaryActivity.class);
         showIntent.putExtra("date",String.valueOf(date));
         startActivity(showIntent);
+    }
+
+    public void loadMainActivity(){
+        Intent showIntent = new Intent(this,MainActivity.class);
+        startActivity(showIntent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            return true;
+        }
+        return false;
     }
 }

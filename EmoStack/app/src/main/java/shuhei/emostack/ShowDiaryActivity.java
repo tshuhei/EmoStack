@@ -136,8 +136,15 @@ public class ShowDiaryActivity extends AppCompatActivity {
         yAxis.setLabelCount(5,false);
         yAxis.setTextSize(9f);
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
+        yAxis.setAxisMaximum(0.8f);
         yAxis.setDrawLabels(false);
+        yAxis.setValueFormatter(new ValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.1f",value);
+            }
+        });
 
         Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -179,17 +186,17 @@ public class ShowDiaryActivity extends AppCompatActivity {
                             if(document.exists()){
                                 Map<String,Object> diaryData = document.getData();
                                 textText.setText(diaryData.get("text").toString());
-                                angerText.setText("Anger: " + diaryData.get("anger").toString());
-                                fearText.setText("Fear: " + diaryData.get("fear").toString());
-                                joyText.setText("Joy: " + diaryData.get("joy").toString());
-                                confidentText.setText("Confident: " + diaryData.get("confident").toString());
-                                sadnessText.setText("Sadness: " + diaryData.get("sadness").toString());
+                                angerText.setText("Anger: " + String.format("%.2f",Double.parseDouble(diaryData.get("anger").toString())));
+                                fearText.setText("Fear: " + String.format("%.2f",Double.parseDouble(diaryData.get("fear").toString())));
+                                joyText.setText("Joy: " + String.format("%.2f",Double.parseDouble(diaryData.get("joy").toString())));
+                                confidentText.setText("Confident: " + String.format("%.2f",Double.parseDouble(diaryData.get("confident").toString())));
+                                sadnessText.setText("Sadness: " + String.format("%.2f",Double.parseDouble(diaryData.get("sadness").toString())));
 
-                                dayanger =(double)diaryData.get("anger");
-                                dayfear = (double)diaryData.get("fear");
-                                dayjoy = (double)diaryData.get("joy");
-                                dayconfident = (double)diaryData.get("confident");
-                                daysadness = (double)diaryData.get("sadness");
+                                dayanger =Double.parseDouble(String.format("%.2f",(double)diaryData.get("anger")));
+                                dayfear = Double.parseDouble(String.format("%.2f",(double)diaryData.get("fear")));
+                                dayjoy = Double.parseDouble(String.format("%.2f",(double)diaryData.get("joy")));
+                                dayconfident = Double.parseDouble(String.format("%.2f",(double)diaryData.get("confident")));
+                                daysadness = Double.parseDouble(String.format("%.2f",(double)diaryData.get("sadness")));
 
                                 //aveanger = 0.8;
                                 //avefear = 0.5;
@@ -207,7 +214,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
                                 stress += 1;
                                 stress*= 50;
 
-                                dailyStress.setText("Your stress score: "+stress+"%");
+                                dailyStress.setText("Your stress score: "+ String.format("%.0f",stress)+"%");
                                 stressScore = stress;
                             }else{
                                 Log.e("error","No such document");
@@ -246,15 +253,15 @@ public class ShowDiaryActivity extends AppCompatActivity {
                                     }
                                     emo /= j;
                                     if(emotions[i]=="anger"){
-                                        aveanger = emo;
+                                        aveanger = Double.parseDouble(String.format("%.2f",emo));
                                     }else if(emotions[i]=="fear"){
-                                        avefear = emo;
+                                        avefear =  Double.parseDouble(String.format("%.2f",emo));
                                     }else if(emotions[i]=="sadness"){
-                                        avesadness = emo;
+                                        avesadness =  Double.parseDouble(String.format("%.2f",emo));
                                     }else if(emotions[i]=="confident"){
-                                        aveconfident = emo;
+                                        aveconfident =  Double.parseDouble(String.format("%.2f",emo));
                                     }else if(emotions[i]=="joy"){
-                                        avejoy = emo;
+                                        avejoy =  Double.parseDouble(String.format("%.2f",emo));
                                     }
                                 }
 
@@ -293,18 +300,18 @@ public class ShowDiaryActivity extends AppCompatActivity {
 
     private void setData(){
         ArrayList<RadarEntry> entries = new ArrayList<>();
-        entries.add(new RadarEntry((float)dayanger*100));
-        entries.add(new RadarEntry((float)dayfear*100));
-        entries.add(new RadarEntry((float)dayjoy*100));
-        entries.add(new RadarEntry((float)dayconfident*100));
-        entries.add(new RadarEntry((float)daysadness*100));
+        entries.add(new RadarEntry((float)dayanger));
+        entries.add(new RadarEntry((float)dayfear));
+        entries.add(new RadarEntry((float)dayjoy));
+        entries.add(new RadarEntry((float)dayconfident));
+        entries.add(new RadarEntry((float)daysadness));
 
         ArrayList<RadarEntry> aveEntries = new ArrayList<>();
-        aveEntries.add(new RadarEntry((float)aveanger*100));
-        aveEntries.add(new RadarEntry((float)avefear*100));
-        aveEntries.add(new RadarEntry((float)avejoy*100));
-        aveEntries.add(new RadarEntry((float)aveconfident*100));
-        aveEntries.add(new RadarEntry((float)avesadness*100));
+        aveEntries.add(new RadarEntry((float)aveanger));
+        aveEntries.add(new RadarEntry((float)avefear));
+        aveEntries.add(new RadarEntry((float)avejoy));
+        aveEntries.add(new RadarEntry((float)aveconfident));
+        aveEntries.add(new RadarEntry((float)avesadness));
 
         RadarDataSet set = new RadarDataSet(entries, "Emotion Today");
         set.setColor(Color.rgb(103,110,129));
@@ -331,8 +338,14 @@ public class ShowDiaryActivity extends AppCompatActivity {
         RadarData data = new RadarData(sets);
         data.setValueTypeface(tfLight);
         data.setValueTextSize(8f);
-        data.setDrawValues(false);
+        data.setDrawValues(true);
         data.setValueTextColor(Color.BLACK);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f",value);
+            }
+        });
 
         chart.setData(data);
         chart.invalidate();
