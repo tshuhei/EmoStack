@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements AnalyzeFragment.O
         if(mFirebaseUser != null){
             mUserId = mFirebaseUser.getUid();
         }else{
-            loadLoginActivity();
+            loadInitialActivity();
         }
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
@@ -66,14 +66,14 @@ public class MainActivity extends AppCompatActivity implements AnalyzeFragment.O
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
             mFirebaseAuth.signOut();
-            loadLoginActivity();
+            loadInitialActivity();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadLoginActivity(){
-        Intent intent = new Intent(this, LoginActivity.class);
+    public void loadInitialActivity(){
+        Intent intent = new Intent(this, InitialActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         sign_up = (Button)findViewById(R.id.sign_in_button);
         log_in = (Button)findViewById(R.id.log_in_button);
+        bbutton = (BootstrapButton)findViewById(R.id.bbottun1);
         input_email = (EditText)findViewById(R.id.input_email);
         input_password = (EditText)findViewById(R.id.input_password);
         sign_up.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-        log_in.setOnClickListener(new View.OnClickListener() {
+        bbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mEmail = input_email.getText().toString();
