@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowDiaryActivity"></activity>
+        <activity android:name=".HighStressActivity"></activity>
+        <activity android:name=".IntermediateStressActivity" />
+        <activity android:name=".MildStressActivity" />
+        <activity android:name=".NoStressActivity" />
+        <activity android:name=".ShowDiaryActivity" />
         <activity android:name=".InitialActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".AnalyzeTextActivity" />

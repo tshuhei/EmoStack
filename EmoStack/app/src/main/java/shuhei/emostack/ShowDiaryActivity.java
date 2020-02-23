@@ -53,6 +53,8 @@ public class ShowDiaryActivity extends AppCompatActivity {
     private Button doneButton;
     private TextView dailyStress;
     private double stress;
+    private Button stressReport;
+    private double stressScore;
 
 
     @Override
@@ -70,8 +72,10 @@ public class ShowDiaryActivity extends AppCompatActivity {
         sadnessText = (TextView)findViewById(R.id.sadnessText);
         doneButton = (Button)findViewById(R.id.done);
         dailyStress = (TextView)findViewById(R.id.dailyStress);
+        stressReport = (Button)findViewById(R.id.stress_report);
 
-        chart = (RadarChart)findViewById(R.id.chart);
+
+        chart = (RadarChart)findViewById(R.id.radar_chart);
 
         chart.getDescription().setEnabled(false);
 
@@ -171,6 +175,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
                                 stress*= 50;
 
                                 dailyStress.setText("Your stress score: "+stress+"%");
+                                stressScore = stress;
                             }else{
                                 Log.e("error","No such document");
                             }
@@ -185,6 +190,21 @@ public class ShowDiaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadMainActivity();
+            }
+        });
+
+        stressReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(0<= stressScore && stressScore <= 25.0){
+                    loadNoStressActivity(stressScore);
+                }else if(25.0 < stressScore && stressScore <= 50.0){
+                    loadMildStressActivity(stressScore);
+                }else if(50.0 < stressScore && stressScore <= 75.0){
+                    loadIntermediateStressActivity(stressScore);
+                }else{
+                    loadHighStressActivity(stressScore);
+                }
             }
         });
     }
@@ -229,6 +249,30 @@ public class ShowDiaryActivity extends AppCompatActivity {
 
     public void loadMainActivity(){
         Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void loadNoStressActivity(double score){
+        Intent intent = new Intent(this,NoStressActivity.class);
+        intent.putExtra("score",String.valueOf(score));
+        startActivity(intent);
+    }
+
+    public void loadMildStressActivity(double score){
+        Intent intent = new Intent(this,MildStressActivity.class);
+        intent.putExtra("score",String.valueOf(score));
+        startActivity(intent);
+    }
+
+    public void loadIntermediateStressActivity(double score){
+        Intent intent = new Intent(this,IntermediateStressActivity.class);
+        intent.putExtra("score",String.valueOf(score));
+        startActivity(intent);
+    }
+
+    public void loadHighStressActivity(double score){
+        Intent intent = new Intent(this,HighStressActivity.class);
+        intent.putExtra("score",String.valueOf(score));
         startActivity(intent);
     }
 }
